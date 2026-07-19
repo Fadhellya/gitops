@@ -7,4 +7,4 @@ resources:
 images:
   - name: shop-ui-image
     newName: image-registry.openshift-image-registry.svc:5000/virtus-shop-apps/shop-ui
-    newTag: ee1cf62ceb989d757f79514783721dccd22601dc
+    newTag: 4bcde90721d3d5208e1ac498856e5d7b042ae3dc
