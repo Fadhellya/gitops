@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mariadb-data
+  namespace: virtus-shop-db
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+  namespace: virtus-shop-db
+  labels:
+    app: mysql          # label ini KUNCI: diseleksi Service & NetworkPolicy
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate      # PVC RWO: hindari 2 pod rebutan volume saat update
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mariadb
+          image: registry.redhat.io/rhel9/mariadb-1011:latest
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_USER
+              value: shop
+            - name: MYSQL_PASSWORD
+              value: shopPass123
+            - name: MYSQL_DATABASE
+              value: virtusshop
+            - name: MYSQL_ROOT_PASSWORD
+              value: rootPass123
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/mysql/data
+          readinessProbe:
+            exec:
+              command: ["/bin/sh", "-c", "mysqladmin ping -u root -p$MYSQL_ROOT_PASSWORD"]
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 3306
+            initialDelaySeconds: 30
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 1Gi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: mariadb-data
