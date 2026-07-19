@@ -7,7 +7,7 @@ spec:
   goTemplate: true
   generators:
     - git:
-        repoURL: https://gitlab.virtus.corp/virtus-shop/gitops.git
+        repoURL: https://github.com/Fadhellya/gitops.git
         revision: main
         directories:
           - path: apps/*
@@ -20,7 +20,7 @@ spec:
     spec:
       project: default
       source:
-        repoURL: https://gitlab.virtus.corp/virtus-shop/gitops.git
+        repoURL: https://github.com/Fadhellya/gitops.git
         targetRevision: main
         path: '{{ .path.path }}'
       destination:
