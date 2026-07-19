@@ -6,7 +6,7 @@ metadata:
   name: shop-gw
   namespace: virtus-shop-apps
 spec:
-  host: shop.apps.ocp4-dc.virtus.corp
+  host: shop.apps.ocp-hosted.virtus.corp
   to:
     kind: Service
     name: shop-gateway
