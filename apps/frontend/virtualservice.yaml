@@ -5,7 +5,7 @@ metadata:
   namespace: virtus-shop-apps
 spec:
   hosts:
-    - shop.apps.ocp4-dc.virtus.corp
+    - shop.apps.ocp-hosted.virtus.corp
   gateways:
     - shop-gateway
   http:
