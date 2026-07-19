@@ -7,4 +7,4 @@ resources:
 images:
   - name: order-api-image
     newName: image-registry.openshift-image-registry.svc:5000/virtus-shop-apps/order-api
-    newTag: 8b76c0ef8402368da8ce1ba820442aa3e05618d9
+    newTag: dfdc58f3fb609e905beaa19e96659f5117c1c02a
