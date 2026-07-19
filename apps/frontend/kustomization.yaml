@@ -9,4 +9,4 @@ resources:
 images:
   - name: frontend-image
     newName: image-registry.openshift-image-registry.svc:5000/virtus-shop-apps/frontend
-    newTag: cb2514c4a85ab61208b70ee2aef9236179336e6a
+    newTag: 78cc8ff74055c64d468e8026c4e2b3b211716956
