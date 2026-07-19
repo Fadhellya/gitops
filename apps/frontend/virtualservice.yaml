@@ -1,0 +1,53 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: frontend
+  namespace: virtus-shop-apps
+spec:
+  hosts:
+    - shop.apps.ocp4-dc.virtus.corp
+  gateways:
+    - shop-gateway
+  http:
+    # API gateway pattern: backend diekspos lewat gateway yang sama.
+    # Rute ini HARUS di atas "primary" (catch-all) — evaluasi VS berurutan.
+    # Argo Rollouts hanya mengelola route bernama "primary", jadi canary aman.
+    - name: orders
+      match:
+        - uri:
+            prefix: /api/orders
+      route:
+        - destination:
+            host: order-api
+            port:
+              number: 8080
+    - name: products
+      match:
+        - uri:
+            prefix: /api/products
+      route:
+        - destination:
+            host: product-api
+            port:
+              number: 8080
+    - name: shop-ui
+      match:
+        - uri:
+            prefix: /shop
+      route:
+        - destination:
+            host: shop-ui
+            port:
+              number: 8080
+    - name: primary
+      route:
+        - destination:
+            host: frontend-stable
+            port:
+              number: 9898
+          weight: 100
+        - destination:
+            host: frontend-canary
+            port:
+              number: 9898
+          weight: 0

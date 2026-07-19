@@ -1,0 +1,64 @@
+# Istio ingress gateway untuk virtus-shop (pola gateway-injection, sama dengan bookinfo-ingress)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shop-gateway
+  namespace: virtus-shop-apps
+  labels:
+    istio: shop-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      istio: shop-gateway
+  template:
+    metadata:
+      annotations:
+        inject.istio.io/templates: gateway
+      labels:
+        istio: shop-gateway
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+        - name: istio-proxy
+          image: auto
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shop-gateway
+  namespace: virtus-shop-apps
+  labels:
+    istio: shop-gateway
+spec:
+  selector:
+    istio: shop-gateway
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+---
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: shop-gateway
+  namespace: virtus-shop-apps
+spec:
+  selector:
+    istio: shop-gateway
+  servers:
+    - hosts:
+        - '*'
+      port:
+        name: http
+        number: 80
+        protocol: HTTP

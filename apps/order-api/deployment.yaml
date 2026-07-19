@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-api
+  namespace: virtus-shop-apps
+  labels:
+    app: order-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-api
+  template:
+    metadata:
+      labels:
+        app: order-api
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+        - name: order-api
+          image: order-api-image
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: PRODUCT_API_URL
+              value: "http://product-api.virtus-shop-apps.svc.cluster.local:8080"
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+          resources:
+            requests:
+              cpu: 25m
+              memory: 32Mi
+            limits:
+              memory: 128Mi

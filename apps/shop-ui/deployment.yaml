@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shop-ui
+  namespace: virtus-shop-apps
+  labels:
+    app: shop-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shop-ui
+  template:
+    metadata:
+      labels:
+        app: shop-ui
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+        - name: shop-ui
+          image: shop-ui-image
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 5
+          resources:
+            requests:
+              cpu: 25m
+              memory: 32Mi
+            limits:
+              memory: 128Mi

@@ -1,0 +1,70 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: frontend
+  namespace: virtus-shop-apps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+        sidecar.istio.io/inject: "true"
+    spec:
+      containers:
+        - name: podinfo
+          image: frontend-image
+          ports:
+            - name: http
+              containerPort: 9898
+          env:
+            - name: PODINFO_UI_COLOR
+              value: "#34577c"
+            - name: PODINFO_BACKEND_URL
+              value: "http://order-api.virtus-shop-apps.svc.cluster.local:8080/echo"
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 9898
+            initialDelaySeconds: 3
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 9898
+            initialDelaySeconds: 5
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+  strategy:
+    canary:
+      stableService: frontend-stable
+      canaryService: frontend-canary
+      trafficRouting:
+        istio:
+          virtualService:
+            name: frontend
+            routes:
+              - primary
+      # analysis background: mulai setelah step-1 (10%), auto-abort kalau success-rate jeblok
+      analysis:
+        templates:
+          - templateName: success-rate
+        startingStep: 1
+        args:
+          - name: service
+            value: frontend-canary
+      # pause tanpa durasi = menunggu "promote" manual (pacing demo dikontrol presenter)
+      steps:
+        - setWeight: 10
+        - pause: {}
+        - setWeight: 25
+        - pause: {}
+        - setWeight: 50
+        - pause: {}
+        - setWeight: 100

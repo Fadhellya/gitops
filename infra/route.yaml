@@ -1,0 +1,14 @@
+# Route ini HANYA pintu L4 dari router OpenShift ke istio gateway (bare-metal tanpa LoadBalancer).
+# Seluruh logika routing/canary ada di Gateway + VirtualService Istio.
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: shop-gw
+  namespace: virtus-shop-apps
+spec:
+  host: shop.apps.ocp4-dc.virtus.corp
+  to:
+    kind: Service
+    name: shop-gateway
+  port:
+    targetPort: http

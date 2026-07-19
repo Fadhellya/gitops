@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: virtus-shop
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  generators:
+    - git:
+        repoURL: https://gitlab.virtus.corp/virtus-shop/gitops.git
+        revision: main
+        directories:
+          - path: apps/*
+          - path: infra
+  template:
+    metadata:
+      name: 'virtus-shop-{{ .path.basename }}'
+      labels:
+        demo: virtus-shop
+    spec:
+      project: default
+      source:
+        repoURL: https://gitlab.virtus.corp/virtus-shop/gitops.git
+        targetRevision: main
+        path: '{{ .path.path }}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: virtus-shop-apps
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
