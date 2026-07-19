@@ -8,4 +8,4 @@ resources:
 images:
   - name: product-api-image
     newName: image-registry.openshift-image-registry.svc:5000/virtus-shop-apps/product-api
-    newTag: 81e63db6a14ae6b6aa079261578ef9df29c9dbf3
+    newTag: ce480dffea3e7667b47085138a5f82284382e09a
