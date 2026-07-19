@@ -6,4 +6,4 @@ resources:
   - db-service.yaml
   - networkpolicy.yaml
   - podmonitor.yaml
-  - mysql.yaml
+  - mariadb.yaml
