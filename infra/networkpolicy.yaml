@@ -4,7 +4,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: default-deny-ingress
-  namespace: virtus-shop-db
+  namespace: vti-shop-db
 spec:
   podSelector: {}
   policyTypes:
@@ -14,7 +14,7 @@ apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
   name: allow-mysql-from-product-api
-  namespace: virtus-shop-db
+  namespace: vti-shop-db
 spec:
   podSelector:
     matchLabels:
