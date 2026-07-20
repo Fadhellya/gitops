@@ -5,7 +5,7 @@ metadata:
   namespace: vti-shop-apps
 spec:
   hosts:
-    - shop.apps.ocp-hosted.virtus.corp
+    - shop.apps.ocp-poc.pertamina.co.id
   gateways:
     - shop-gateway
   http:
