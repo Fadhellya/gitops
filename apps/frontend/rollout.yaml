@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: frontend
-  namespace: virtus-shop-apps
+  namespace: vti-shop-apps
 spec:
   replicas: 2
   selector:
@@ -24,7 +24,7 @@ spec:
             - name: PODINFO_UI_COLOR
               value: "#34577c"
             - name: PODINFO_BACKEND_URL
-              value: "http://order-api.virtus-shop-apps.svc.cluster.local:8080/echo"
+              value: "http://order-api.vti-shop-apps.svc.cluster.local:8080/echo"
           readinessProbe:
             httpGet:
               path: /readyz
