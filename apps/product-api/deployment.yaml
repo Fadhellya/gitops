@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: product-api
-  namespace: virtus-shop-apps
+  namespace: vti-shop-apps
   labels:
     app: product-api
 spec:
