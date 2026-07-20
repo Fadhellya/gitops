@@ -4,7 +4,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: istio-proxies-monitor
-  namespace: virtus-shop-apps
+  namespace: vti-shop-apps
 spec:
   podMetricsEndpoints:
     - interval: 30s
