@@ -6,7 +6,7 @@ metadata:
   name: shop-gw
   namespace: vti-shop-apps
 spec:
-  host: shop.apps.ocp-hosted.virtus.corp
+  host: shop.apps.ocp-poc.pertamina.co.id
   to:
     kind: Service
     name: shop-gateway
