@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: virtus-shop-db
+  name: vti-shop-db
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mysql
-  namespace: virtus-shop-db
+  namespace: vti-shop-db
   labels:
     app: mysql
 spec:
