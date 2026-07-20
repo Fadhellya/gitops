@@ -1,10 +1,10 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: virtus-shop-apps
+namespace: vti-shop-apps
 resources:
   - deployment.yaml
   - service.yaml
 images:
   - name: shop-ui-image
-    newName: image-registry.openshift-image-registry.svc:5000/virtus-shop-apps/shop-ui
+    newName: image-registry.openshift-image-registry.svc:5000/vti-shop-apps/shop-ui
     newTag: fced31cd88d94ec2ddaaaf58a8ac6892ff4ea4bb
